@@ -4,6 +4,13 @@
 
 using namespace bhtool;
 
+template<typename T, typename... U>
+size_t getStdFnAddress(std::function<T(U...)> f) {
+    typedef T(fnType)(U...);
+    fnType ** fnPointer = f.template target<fnType*>();
+    return (size_t) *fnPointer;
+}
+
 TEST( something, sometest ) {
     EXPECT_TRUE( true );
 }
@@ -17,10 +24,7 @@ TEST( utilities, find_cmd_function_from_command ) {
     };
 
     auto actual = find_command("some_command", cmds);
-    ASSERT_NE(actual, nullptr);
-    EXPECT_EQ( actual(0, nullptr), 99 );
-    //could not figure out how to check the function pointer. Tried several variations of
-    //  EXPECT_EQ(actual,some_command_fn);
+    EXPECT_EQ(getStdFnAddress(actual), (size_t)&some_command_fn);
 }
 
 TEST( utilities, find_missing_cmd_function_from_command ) {
