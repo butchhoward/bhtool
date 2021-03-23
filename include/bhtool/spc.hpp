@@ -5,9 +5,13 @@
 #include <stdio.h>
 
 typedef struct SPC_PIPE {
-  FILE  *read_fd;
-  FILE  *write_fd;
-  pid_t child_pid;
+    FILE  *stdout_fd;
+    FILE  *stdin_fd;
+    FILE  *stderr_fd;
+    pid_t child_pid;
+    int stdin_pipe[2];
+    int stdout_pipe[2];
+    int stderr_pipe[2];
 } SPC_PIPE;
 
 

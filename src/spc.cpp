@@ -23,66 +23,102 @@ https://resources.oreilly.com/examples/9780596003944
 
 #include <iostream>
 
+namespace {
+void spc_fd_close_safe(int fd)
+{
+    if ( fd >= 0 )
+    {
+        close(fd);
+    }
+}
+
+void spc_uninit(SPC_PIPE* p)
+{
+    spc_fd_close_safe(p->stdin_pipe[0]);
+    spc_fd_close_safe(p->stdin_pipe[1]);
+    spc_fd_close_safe(p->stdout_pipe[0]);
+    spc_fd_close_safe(p->stdout_pipe[1]);
+    spc_fd_close_safe(p->stderr_pipe[0]);
+    spc_fd_close_safe(p->stderr_pipe[1]);
+
+    if (p->stdin_fd) fclose(p->stdin_fd);
+    if (p->stdout_fd) fclose(p->stdout_fd);
+    if (p->stderr_fd) fclose(p->stderr_fd);
+
+    free(p);
+}
+
+SPC_PIPE *spc_init()
+{
+    SPC_PIPE *p;
+
+    if ( !(p = (SPC_PIPE *)malloc(sizeof(SPC_PIPE))) )
+    {
+        std::cerr << "spc_init malloc failed\n";
+        return 0;
+    }
+
+    p->stdin_pipe[0] = p->stdin_pipe[0] =
+    p->stdout_pipe[0] = p->stdout_pipe[0] =
+    p->stderr_pipe[0] = p->stderr_pipe[0] = -1;
+
+    p->stdout_fd = p->stdin_fd = p->stderr_fd = 0;
+
+    p->child_pid = -1;
+
+
+    if ( pipe(p->stdin_pipe) == -1 ||
+         pipe(p->stdout_pipe) == -1 ||
+         pipe(p->stderr_pipe) == -1 ||
+         !(p->stdin_fd = fdopen(p->stdin_pipe[1], "w")) ||
+         !(p->stdout_fd = fdopen(p->stdout_pipe[0], "r")) ||
+         !(p->stderr_fd = fdopen(p->stderr_pipe[0], "r"))
+    )
+    {
+        std::cerr << "spc_init failed\n";
+
+        spc_uninit(p);
+        return 0;
+    }
+
+    return p;
+}
+
+void spc_pipe_plug_dip(int piper[2], int to_close, int to_dup, int fd_to_dup)
+{
+    close(piper[to_close]);
+    if (piper[to_dup] != fd_to_dup) {
+        dup2(piper[to_dup], fd_to_dup);
+        close(piper[to_dup]);
+    }
+}
+
+
+}
+
 SPC_PIPE *spc_popen(const char *path, char *const argv[], char *const /*envp*/[])
 {
-  int      stdin_pipe[2], stdout_pipe[2];
-  SPC_PIPE *p;
 
-  if (!(p = (SPC_PIPE *)malloc(sizeof(SPC_PIPE)))) return 0;
-  p->read_fd = p->write_fd = 0;
-  p->child_pid = -1;
+    auto p = spc_init();
+    if (!p)
+    {
+        return 0;
+    }
 
-  if (pipe(stdin_pipe) == -1) {
-    free(p);
-    return 0;
-  }
-  if (pipe(stdout_pipe) == -1) {
-    close(stdin_pipe[1]);
-    close(stdin_pipe[0]);
-    free(p);
-    return 0;
-  }
-
-  if (!(p->read_fd = fdopen(stdout_pipe[0], "r"))) {
-    close(stdout_pipe[1]);
-    close(stdout_pipe[0]);
-    close(stdin_pipe[1]);
-    close(stdin_pipe[0]);
-    free(p);
-    return 0;
-  }
-  if (!(p->write_fd = fdopen(stdin_pipe[1], "w"))) {
-    fclose(p->read_fd);
-    close(stdout_pipe[1]);
-    close(stdin_pipe[1]);
-    close(stdin_pipe[0]);
-    free(p);
-    return 0;
-  }
-
-
-  if ((p->child_pid = spc_fork()) == -1) {
-    fclose(p->write_fd);
-    fclose(p->read_fd);
-    close(stdout_pipe[1]);
-    close(stdin_pipe[0]);
-    free(p);
-    return 0;
-  }
+    if ((p->child_pid = spc_fork()) == -1) {
+        spc_uninit(p);
+        std::cerr << "spc_popen fork failed\n";
+        return 0;
+    }
 
   if (!p->child_pid) {
 
     /* this is the child process */
-    close(stdout_pipe[0]);
-    close(stdin_pipe[1]);
-    if (stdin_pipe[0] != 0) {
-      dup2(stdin_pipe[0], 0);
-      close(stdin_pipe[0]);
-    }
-    if (stdout_pipe[1] != 1) {
-      dup2(stdout_pipe[1], 1);
-      close(stdout_pipe[1]);
-    }
+    //close input side of child's stdout, stderr
+    //close the parent side of stdin
+    spc_pipe_plug_dip(p->stdin_pipe,  1, 0, 0);
+    spc_pipe_plug_dip(p->stdout_pipe, 0, 1, 1);
+    spc_pipe_plug_dip(p->stderr_pipe, 0, 1, 2);
 
     //using execvp because I choose to trust my current environment, see book for notes why this is NOT secure.
     execvp(path, &(argv[0]));
@@ -92,9 +128,13 @@ SPC_PIPE *spc_popen(const char *path, char *const argv[], char *const /*envp*/[]
   }
 
 
-  close(stdout_pipe[1]);
-  close(stdin_pipe[0]);
-  return p;
+    //this is the parent, close the pipe sides the parent will not use
+    //the files are still open
+    close(p->stdout_pipe[1]);
+    close(p->stdin_pipe[0]);
+    close(p->stderr_pipe[1]);
+
+    return p;
 }
 
 int spc_pclose(SPC_PIPE *p) {
@@ -106,11 +146,16 @@ int spc_pclose(SPC_PIPE *p) {
       pid = waitpid(p->child_pid, &status, 0);
     } while (pid == -1 && errno == EINTR);
   }
-  if (p->read_fd) fclose(p->read_fd);
-  if (p->write_fd) fclose(p->write_fd);
+  if (p->stdin_fd) fclose(p->stdin_fd);
+  if (p->stdout_fd) fclose(p->stdout_fd);
+  if (p->stderr_fd) fclose(p->stderr_fd);
+
   free(p);
-  if (pid != -1 && WIFEXITED(status)) return WEXITSTATUS(status);
-  else return (pid == -1 ? -1 : 0);
+
+  if (pid != -1 && WIFEXITED(status))
+    return WEXITSTATUS(status);
+  else
+    return (pid == -1 ? -1 : 0);
 }
 
 
