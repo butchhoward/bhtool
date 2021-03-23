@@ -13,18 +13,16 @@ bhtool::commands command_map = {
 
 int main(int argc, char *argv[])
 {
-    if (argc < 2)
+    std::string command;
+    if (argc > 1 )
     {
-        return 1;
+        command = argv[1];
     }
 
-    auto cmd = bhtool::find_command(argv[1], command_map);
-    if (cmd == nullptr)
-    {
-        return 2;
-    }
+    auto cmd = bhtool::find_command(command, command_map);
 
-    auto code = cmd(--argc, &(argv[1]));
+    auto subcommand_args = &(argv[1]);
+    auto code = cmd(--argc, subcommand_args);
 
     return code;
 }

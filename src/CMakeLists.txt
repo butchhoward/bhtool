@@ -4,6 +4,7 @@
 set(HEADER_LIST
     "${PROJECT_SOURCE_DIR}/include/modern/lib.hpp"
     "${PROJECT_SOURCE_DIR}/include/bhtool/bhtool.hpp"
+    "${PROJECT_SOURCE_DIR}/include/bhtool/spc.hpp"
     "${PROJECT_SOURCE_DIR}/include/bhtool/stderrred.hpp"
 )
 
@@ -19,6 +20,7 @@ target_compile_features(modern_library PUBLIC cxx_std_17)
 
 add_library(bhtool_library
             bhtool_lib.cpp
+            spc.cpp
             stderrred.cpp
             ${HEADER_LIST})
 target_include_directories(bhtool_library PUBLIC ../include)

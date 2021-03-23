@@ -27,12 +27,12 @@ TEST( utilities, find_cmd_function_from_command ) {
     EXPECT_EQ(getStdFnAddress(actual), (size_t)&some_command_fn);
 }
 
-TEST( utilities, find_missing_cmd_function_from_command ) {
+TEST( utilities, find_cmd_function_invalid_command_gives_usage ) {
 
     commands cmds = {
         {std::string("some_command"), some_command_fn}
     };
 
     auto actual = find_command("some_other_command", cmds);
-    EXPECT_EQ( actual, nullptr );
+    EXPECT_EQ(getStdFnAddress(actual), (size_t)&last_ditch_usage);
 }
