@@ -18,7 +18,10 @@ target_link_libraries(testlib PRIVATE gtest_main
 # You can also run examples and check the output, as well.
 add_test(NAME testlibtest COMMAND testlib) # Command can be a target
 
-add_executable(testbhtool testbhtool.cpp)
+add_executable(testbhtool
+                testbhtool.cpp
+                teststderrred.cpp
+                )
 target_compile_features(testbhtool PRIVATE cxx_std_17)
 target_link_libraries(testbhtool PRIVATE gtest_main
                                       bhtool_library

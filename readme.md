@@ -5,7 +5,8 @@ Using a collection of bash scripts I use frequently as the basis for a project t
 
 
 ```shell
-mkdir build && cd build && cmake .. && make all test
+mkdir build && cd build && cmake ..
+make CTEST_OUTPUT_ON_FAILURE=1 all test
 ```
 
 ## Usage
@@ -13,4 +14,16 @@ mkdir build && cd build && cmake .. && make all test
 ```
 bhtool <command> [<sub-command>] [options]
 ```
+
+## Commands
+
+### `stderrred <cmd> [args...]`
+
+Execute `<cmd> [args...]`
+
+Color all `stderr` output <span style="color:red">RED</span>.
+
+Leave all `stdout` output the default color.
+
+
 
