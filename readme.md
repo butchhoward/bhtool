@@ -1,17 +1,16 @@
-[![Build Status: Travis](https://travis-ci.org/butchhoward/cmake_exmample.svg)](https://travis-ci.org/butchhoward/cmake_exmample)
-
-cmake_exmample
+# BHTool - Used to Bash Scripts, Now are C++ Binaries
 ==============
 
-A sample building cpp using cmake, a simple folder structure, and gmock/gtest.
+Using a collection of bash scripts I use frequently as the basis for a project to refresh my C++ skills and skills around creating command line utilities.
 
-Rebuilt using guidance from [Modern CMake](https://gitlab.com/CLIUtils/modern-cmake)
 
 ```shell
-mkdir build
-cd build
-cmake ..
-make all
-make test
+mkdir build && cd build && cmake .. && make all test
+```
+
+## Usage
+
+```
+bhtool <command> [<sub-command>] [options]
 ```
 
