@@ -1,7 +1,13 @@
 #include <bhtool/stderrred.hpp>
+#include <bhtool/color_streams.h>
 #include <iostream>
 
 #include <bhtool/spc.hpp>
+
+namespace {
+    const char ansi_reset[]   = "\x1b[0m";
+    const char ansi_red[]     = "\x1b[31m";
+}
 
 int bhtool::stderrred(int argc, char *argv[])
 {
@@ -12,38 +18,29 @@ int bhtool::stderrred(int argc, char *argv[])
         return 254;
     }
 
-    char stdout_buf[80];
-    char stderr_buf[80];
-    bool stderred = false;
-    std::cerr << "bhtool::stderrred LOOPing\n";
-    do {
-        stdout_buf[0] = '\0';
-        stderr_buf[0] = '\0';
+    char buf[255];
 
-        fgets(stdout_buf, 80, p->stdout_fd);
-        if(!feof(p->stdout_fd))
+    do {
+        int status;
+        auto pid = waitpid(p->child_pid, &status, WNOHANG /*| WNOWAIT | WUNTRACED | WCONTINUED*/);
+        if ( pid == -1)
         {
-            // std::cout << stdout_buf;
+            break;
         }
 
-        fgets(stderr_buf, 80, p->stderr_fd);
-        if(!feof(p->stderr_fd))
+        buf[0] = '\0';
+        if(fgets(buf, sizeof buf, p->stdout_fd))
         {
-            if (!stderred)
-            {
-                stderred = true;
-                std::cerr << u"\u001b[31m" << "!!!";
-            }
-            // std::cerr << stdout_buf;
+            std::cout << buf;
+        }
+
+        buf[0] = '\0';
+        if(fgets(buf, sizeof buf, p->stderr_fd))
+        {
+            std::cerr << ansi::red << buf << ansi::reset;
         }
 
     } while(!feof(p->stdout_fd) || !feof(p->stderr_fd));
-
-    if (stderred)
-    {
-        std::cerr << "!!!" << u"\u001b[0m";
-    }
-    std::cerr << "bhtool::stderrred DONE\n";
 
     auto exit_code = spc_pclose(p);
 
