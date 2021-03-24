@@ -1,7 +1,32 @@
 #include <bhtool/bhtool.hpp>
 #include <iostream>
 
-using namespace bhtool;
+#include <bhtool/stderrred.hpp>
+
+
+bhtool::commands bhtool_commands = {
+     {std::string("bhtool"), bhtool::last_ditch_usage}
+    ,{std::string("help"), bhtool::last_ditch_usage}
+    ,{std::string(STDERRRED_CMD), bhtool::stderrred}
+};
+
+const bhtool::commands& bhtool::command_map()
+{
+    return bhtool_commands;
+}
+
+int bhtool::bhtool(int argc, char *argv[])
+{
+    std::string command;
+    command = argv[1];
+
+    auto cmd = bhtool::find_command(command, bhtool::command_map());
+
+    auto subcommand_args = &(argv[1]);
+    auto code = cmd(--argc, subcommand_args);
+
+    return code;
+}
 
 int bhtool::last_ditch_usage(int /*argc*/, char *argv[])
 {
@@ -18,11 +43,12 @@ int bhtool::last_ditch_usage(int /*argc*/, char *argv[])
     return 1;
 }
 
-cmd_function bhtool::find_command(const std::string command_name, commands cmds)
+bhtool::cmd_function bhtool::find_command(const std::string command_name, commands cmds)
 {
     auto cmd = cmds.find(command_name);
     if (cmd != cmds.end())
         return cmd->second;
 
-    return last_ditch_usage;
+    return bhtool::last_ditch_usage;
 }
+
