@@ -1,11 +1,14 @@
 #include <bhtool/bhtool.hpp>
-
+#include <iostream>
+#include <filesystem>
 
 int main(int argc, char *argv[])
 {
-    auto cmd = bhtool::find_command(argv[0], bhtool::command_map());
+    auto command = std::filesystem::path(argv[0]).filename();
 
-    auto code = cmd(argc, argv);
+    auto cmd = bhtool::find_command(command, bhtool::command_map());
+
+    auto code = cmd(argc, &(argv[0]));
 
     return code;
 }
