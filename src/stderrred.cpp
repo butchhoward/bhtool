@@ -21,13 +21,6 @@ int bhtool::stderrred(int argc, char *argv[])
     char buf[255];
 
     do {
-        int status;
-        auto pid = waitpid(p->child_pid, &status, WNOHANG /*| WNOWAIT | WUNTRACED | WCONTINUED*/);
-        if ( pid == -1)
-        {
-            break;
-        }
-
         buf[0] = '\0';
         if(fgets(buf, sizeof buf, p->stdout_fd))
         {
