@@ -19,7 +19,7 @@ int some_command_fn(int, char *[]) { return 99; };
 
 TEST( utilities, find_cmd_function_from_command ) {
 
-    commands cmds = {
+    Commands cmds = {
         {std::string("some_command"), some_command_fn}
     };
 
@@ -29,7 +29,7 @@ TEST( utilities, find_cmd_function_from_command ) {
 
 TEST( utilities, find_cmd_function_invalid_command_gives_usage ) {
 
-    commands cmds = {
+    Commands cmds = {
         {std::string("some_command"), some_command_fn}
     };
 
