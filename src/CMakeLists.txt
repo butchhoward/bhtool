@@ -11,7 +11,7 @@ set(HEADER_LIST
 # These can be multiple libraries built here
 # Just add sets of these three commands
 add_library(bhtool_library
-            bhtool_lib.cpp
+            bhtool.cpp
             spc.cpp
             stderrred.cpp
             ${HEADER_LIST})
