@@ -32,3 +32,21 @@ TEST( utilities, find_cmd_function_invalid_command_gives_usage ) {
     auto actual = find_command("some_other_command", cmds);
     EXPECT_EQ(getStdFnAddress(actual), (size_t)&last_ditch_usage);
 }
+
+TEST( utilities, help_cmd_is_usage ) {
+
+    auto actual = find_command("help", bhtool::command_map());
+    EXPECT_EQ(getStdFnAddress(actual), (size_t)&last_ditch_usage);
+}
+
+TEST( utilities, repo_cmd_is_not_implemented ) {
+
+    auto actual = find_command("repo", bhtool::command_map());
+    EXPECT_EQ(getStdFnAddress(actual), (size_t)&not_implemented_yet);
+}
+
+TEST( utilities, venv_cmd_is_not_implemented ) {
+
+    auto actual = find_command("venv", bhtool::command_map());
+    EXPECT_EQ(getStdFnAddress(actual), (size_t)&not_implemented_yet);
+}

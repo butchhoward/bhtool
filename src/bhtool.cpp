@@ -13,6 +13,8 @@ const bhtool::Commands bhtool::command_map()
          {bhtool::CMD_NAME, bhtool::bhtool}
         ,{bhtool::CMD_NAME, bhtool::last_ditch_usage}
         ,{stderrred::CMD_NAME, stderrred::stderrred}
+        ,{"repo", bhtool::not_implemented_yet}
+        ,{"venv", bhtool::not_implemented_yet}
     };
 }
 
@@ -37,7 +39,6 @@ int bhtool::last_ditch_usage(int /*argc*/, char */*argv*/[])
               << "\tstderrred\n"
               << "\trepo (not implemented yet)\n"
               << "\tvenv (not implemented yet)\n"
-              << "\tdocker (not implemented yet)\n"
               << "\n";
     return 1;
 }
@@ -53,3 +54,8 @@ bhtool::CmdFunction bhtool::find_command(const std::string command_name, bhtool:
     return bhtool::last_ditch_usage;
 }
 
+int bhtool::not_implemented_yet(int argc, char *argv[])
+{
+    std::cout << "That function is not implemented yet.\n";
+    return last_ditch_usage(argc, argv);
+}
