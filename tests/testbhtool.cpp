@@ -12,7 +12,7 @@ size_t getStdFnAddress(std::function<T(U...)> f) {
 }
 
 TEST( something, sometest ) {
-    EXPECT_TRUE( false );
+    EXPECT_TRUE( true );
 }
 
 int some_command_fn(int, char *[]) { return 99; };

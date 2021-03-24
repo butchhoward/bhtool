@@ -1,4 +1,4 @@
-# Documentation for Modern Library                             {#mainpage}
+# Documentation for bhtool Library                             {#mainpage}
 
 This is the documentation for my simple example library.
 
