@@ -4,15 +4,16 @@
 #include <bhtool/stderrred.hpp>
 
 
-bhtool::Commands bhtool_commands = {
-     {std::string("bhtool"), bhtool::bhtool}
-    ,{std::string("help"), bhtool::last_ditch_usage}
-    ,{std::string(STDERRRED_CMD), bhtool::stderrred}
-};
+const std::string bhtool::CMD_NAME("bhtool");
+const std::string bhtool::CMD_NAME_HELP("help");
 
-const bhtool::Commands& bhtool::command_map()
+const bhtool::Commands bhtool::command_map()
 {
-    return bhtool_commands;
+    return {
+         {bhtool::CMD_NAME, bhtool::bhtool}
+        ,{bhtool::CMD_NAME, bhtool::last_ditch_usage}
+        ,{stderrred::CMD_NAME, stderrred::stderrred}
+    };
 }
 
 int bhtool::bhtool(int argc, char *argv[])

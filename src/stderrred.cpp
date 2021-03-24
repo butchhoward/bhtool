@@ -4,14 +4,14 @@
 
 #include <bhtool/spc.hpp>
 
-namespace {
-    const char ansi_reset[]   = "\x1b[0m";
-    const char ansi_red[]     = "\x1b[31m";
-}
+const std::string stderrred::CMD_NAME("stderrred");
 
-int bhtool::stderrred(int argc, char *argv[])
+namespace {
+
+int stderrred_execution(int argc, char *argv[])
 {
-    SPC_PIPE* p = spc_popen(argv[1], &(argv[1]), NULL);
+
+    SPC_PIPE* p = spc_popen(argv[0], &(argv[0]), NULL);
     if (!p)
     {
         std::cerr << "spc_open failed\n";
@@ -43,4 +43,16 @@ int bhtool::stderrred(int argc, char *argv[])
     }
 
     return 255;
+}
+
+}
+
+int stderrred::stderrred(int argc, char *argv[])
+{
+    if (argc <= 1)
+    {
+        return bhtool::last_ditch_usage(argc, argv);
+    }
+
+    return stderrred_execution(--argc, &(argv[1]));
 }

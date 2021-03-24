@@ -11,10 +11,6 @@ size_t getStdFnAddress(std::function<T(U...)> f) {
     return (size_t) *fnPointer;
 }
 
-TEST( utilities, sometest ) {
-    EXPECT_TRUE( true );
-}
-
 int some_command_fn(int, char *[]) { return 99; };
 
 TEST( utilities, find_cmd_function_from_command ) {

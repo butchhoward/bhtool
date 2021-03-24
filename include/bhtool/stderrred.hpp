@@ -2,10 +2,11 @@
 
 #include <bhtool/bhtool.hpp>
 
-#define STDERRRED_CMD "stderrred"
 
 
-namespace bhtool {
+namespace stderrred {
+
+extern const std::string CMD_NAME;
 
 int stderrred(int argc, char *argv[]);
 
