@@ -5,6 +5,7 @@ set(HEADER_LIST
     "${PROJECT_SOURCE_DIR}/include/bhtool/bhtool.hpp"
     "${PROJECT_SOURCE_DIR}/include/bhtool/spc.hpp"
     "${PROJECT_SOURCE_DIR}/include/bhtool/stderrred.hpp"
+    "${PROJECT_SOURCE_DIR}/include/bhtool/color_streams.h"
 )
 
 # These can be multiple libraries built here

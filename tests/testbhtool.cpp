@@ -11,7 +11,7 @@ size_t getStdFnAddress(std::function<T(U...)> f) {
     return (size_t) *fnPointer;
 }
 
-TEST( something, sometest ) {
+TEST( utilities, sometest ) {
     EXPECT_TRUE( true );
 }
 
