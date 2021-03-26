@@ -10,6 +10,7 @@ namespace {
 
 int stderrred_execution(int argc, char *argv[])
 {
+    (void)argc;
 
     SPC_PIPE* p = spc_popen(argv[0], &(argv[0]), NULL);
     if (!p)

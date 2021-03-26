@@ -155,7 +155,7 @@ SPC_PIPE *spc_popen(const char *path, char *const argv[], char *const /*envp*/[]
 int spc_pclose(SPC_PIPE *p)
 {
     int status;
-    pid_t pid;
+    pid_t pid = -1;
 
     if (p->child_pid != -1)
     {
@@ -164,6 +164,7 @@ int spc_pclose(SPC_PIPE *p)
             pid = waitpid(p->child_pid, &status, 0);
         } while (pid == -1 && errno == EINTR);
     }
+
     if (p->stdin_fd)
         fclose(p->stdin_fd);
     if (p->stdout_fd)
