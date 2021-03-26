@@ -96,14 +96,10 @@ SPC_PIPE *spc_init()
     return p;
 }
 
-void spc_pipe_plug_dup(int piper[2], int to_close, int to_dup, int fd_to_dup)
+void spc_pipe_plug_dup(int pipe_des[2], int des_to_close, int des_to_dup, int fd_to_dup)
 {
-    dup2(piper[to_dup], fd_to_dup);
-    close(piper[to_close]);
-    // if (piper[to_dup] != fd_to_dup) {
-    //     dup2(piper[to_dup], fd_to_dup);
-    //     close(piper[to_dup]);
-    // }
+    dup2(pipe_des[des_to_dup], fd_to_dup);
+    close(pipe_des[des_to_close]);
 }
 
 
