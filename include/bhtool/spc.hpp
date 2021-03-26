@@ -22,6 +22,7 @@ pid_t spc_fork(void);
 
 void spc_sanitize_files(void);
 
-void spc_drop_privileges(int permanent);
+void spc_drop_privileges(bool permanent);
 void spc_restore_privileges(void);
+
 #endif
