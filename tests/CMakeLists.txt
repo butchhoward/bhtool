@@ -17,7 +17,7 @@ add_executable(testbhtool
                 testbhtool.cpp
                 teststderrred.cpp
                 )
-target_compile_features(testbhtool PRIVATE cxx_std_17)
+target_compile_features(testbhtool PRIVATE cxx_std_20)
 target_link_libraries(testbhtool PRIVATE gtest_main
                                       bhtool_library
                                       )
