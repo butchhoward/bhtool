@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include <bhtool/stderrred.hpp>
+#include <bhtool/repo.hpp>
 
 
 const std::string bhtool::CMD_NAME("bhtool");
@@ -11,9 +12,9 @@ const bhtool::Commands bhtool::command_map()
 {
     return {
          {bhtool::CMD_NAME, bhtool::bhtool}
-        ,{bhtool::CMD_NAME, bhtool::last_ditch_usage}
+        ,{bhtool::CMD_NAME_HELP, bhtool::last_ditch_usage}
         ,{stderrred::CMD_NAME, stderrred::stderrred}
-        ,{"repo", bhtool::not_implemented_yet}
+        ,{repo::CMD_NAME, repo::repo}
         ,{"venv", bhtool::not_implemented_yet}
     };
 }
@@ -57,5 +58,6 @@ bhtool::CmdFunction bhtool::find_command(const std::string command_name, bhtool:
 int bhtool::not_implemented_yet(int argc, char *argv[])
 {
     std::cout << "That function is not implemented yet.\n";
-    return last_ditch_usage(argc, argv);
+    last_ditch_usage(argc, argv);
+    return 86;
 }

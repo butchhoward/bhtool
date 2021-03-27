@@ -14,6 +14,7 @@ add_library(bhtool_library
             bhtool.cpp
             spc.cpp
             stderrred.cpp
+            repo.cpp
             ${HEADER_LIST})
 target_include_directories(bhtool_library PUBLIC ../include)
 target_compile_features(bhtool_library PUBLIC cxx_std_20)

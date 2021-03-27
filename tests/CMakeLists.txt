@@ -13,10 +13,11 @@ FetchContent_MakeAvailable(googletest)
 
 # There can be multiple test programs
 # Just add sets of these four commands
-add_executable(testbhtool
-                testbhtool.cpp
-                teststderrred.cpp
-                )
+add_executable( testbhtool
+                test_bhtool.cpp
+                test_stderrred.cpp
+                test_repo.cpp
+              )
 target_compile_features(testbhtool PRIVATE cxx_std_20)
 target_link_libraries(testbhtool PRIVATE gtest_main
                                       bhtool_library

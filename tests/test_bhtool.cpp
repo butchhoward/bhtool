@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include <bhtool/bhtool.hpp>
 #include <bhtool/stderrred.hpp>
+#include <bhtool/repo.hpp>
 
 using namespace bhtool;
 
@@ -39,14 +40,25 @@ TEST( utilities, help_cmd_is_usage ) {
     EXPECT_EQ(getStdFnAddress(actual), (size_t)&last_ditch_usage);
 }
 
-TEST( utilities, repo_cmd_is_not_implemented ) {
+TEST( utilities, stderrred_cmd_is_stderrred ) {
 
-    auto actual = find_command("repo", bhtool::command_map());
-    EXPECT_EQ(getStdFnAddress(actual), (size_t)&not_implemented_yet);
+    auto actual = find_command(stderrred::CMD_NAME, bhtool::command_map());
+    EXPECT_EQ(getStdFnAddress(actual), (size_t)&stderrred::stderrred);
+}
+
+TEST( utilities, repo_cmd_is_repo ) {
+
+    auto actual = find_command(repo::CMD_NAME, bhtool::command_map());
+    EXPECT_EQ(getStdFnAddress(actual), (size_t)&repo::repo);
 }
 
 TEST( utilities, venv_cmd_is_not_implemented ) {
 
     auto actual = find_command("venv", bhtool::command_map());
     EXPECT_EQ(getStdFnAddress(actual), (size_t)&not_implemented_yet);
+}
+
+TEST( bhtool, not_implemented_returns_86 ) {
+
+    EXPECT_EQ(not_implemented_yet(0, nullptr), 86 );
 }
