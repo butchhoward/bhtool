@@ -22,7 +22,7 @@ const bhtool::Commands bhtool::command_map()
 int bhtool::bhtool(int argc, char *argv[])
 {
     std::string command;
-    command = argc > 1 ? argv[1] : "help";
+    command = argc > 1 ? argv[1] : bhtool::CMD_NAME_HELP;
 
     auto cmd = bhtool::find_command(command, bhtool::command_map());
 

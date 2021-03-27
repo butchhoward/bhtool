@@ -7,6 +7,7 @@
 
 namespace bhtool
 {
+
 extern const std::string CMD_NAME;
 extern const std::string CMD_NAME_HELP;
 
@@ -20,7 +21,5 @@ const Commands command_map();
 int bhtool(int argc, char *argv[]);
 int last_ditch_usage(int argc, char *argv[]);
 int not_implemented_yet(int argc, char *argv[]);
-
-
 
 }
