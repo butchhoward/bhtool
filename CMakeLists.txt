@@ -1,5 +1,5 @@
-# Works with 3.14 and tested through 3.19
-cmake_minimum_required(VERSION 3.14...3.19)
+# Requires Cmake 3.20 now
+cmake_minimum_required(VERSION 3.17)
 
 # Project name and a few useful settings. Other commands can pick up the results
 project(
@@ -26,6 +26,8 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   # Note this needs to be done in the main CMakeLists
   # since it calls enable_testing, which must be in the
   # main CMakeLists.
+  set(CTEST_OUTPUT_ON_FAILURE 1)
+  list (APPEND CMAKE_CTEST_ARGUMENTS "-V")
   include(CTest)
 
   # Docs only available if this is the main app
@@ -59,5 +61,6 @@ add_subdirectory(apps)
 # Emergency override MODERN_CMAKE_BUILD_TESTING provided as well
 if((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING)
    AND BUILD_TESTING)
+
   add_subdirectory(tests)
 endif()
