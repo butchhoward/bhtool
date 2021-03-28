@@ -1,0 +1,28 @@
+# - Try to find the SECURITY library
+# Once done this will define
+#
+#  SECURITY_FOUND - System has SECURITY
+#  SECURITY_INCLUDE_DIR - The SECURITY include directory
+#  SECURITY_LIBRARIES - The libraries needed to use SECURITY
+#  SECURITY_DEFINITIONS - Compiler switches required for using SECURITY
+
+
+# use pkg-config to get the directories and then use these values
+# in the FIND_PATH() and FIND_LIBRARY() calls
+#FIND_PACKAGE(PkgConfig)
+#PKG_SEARCH_MODULE(PC_SECURITY SECURITY)
+
+SET(SECURITY_DEFINITIONS "")
+
+FIND_PATH(SECURITY_INCLUDE_DIR NAMES Security.framework
+   HINTS
+   ${PC_SECURITY_INCLUDEDIR}
+   ${PC_SECURITY_INCLUDE_DIRS}
+)
+
+FIND_LIBRARY(SECURITY_LIBRARIES NAMES Security)
+
+INCLUDE(FindPackageHandleStandardArgs)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(Security DEFAULT_MSG SECURITY_LIBRARIES SECURITY_INCLUDE_DIR)
+
+MARK_AS_ADVANCED(SECURITY_INCLUDE_DIR SECURITY_LIBRARIES)
