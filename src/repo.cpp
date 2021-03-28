@@ -1,13 +1,12 @@
 #include <bhtool/repo.hpp>
 #include <bhtool/bhtool.hpp>
 
+#include <git2.h>
+
 #include <iostream>
 
 const std::string repo::CMD_NAME("repo");
 
-namespace {
-    
-}
 
 const bhtool::Commands repo::command_map()
 {
@@ -19,7 +18,6 @@ const bhtool::Commands repo::command_map()
 
 int repo::repo(int argc, char *argv[])
 {
-
     std::string command;
     command = argc > 1 ? argv[1] : bhtool::CMD_NAME_HELP;
 
@@ -47,5 +45,15 @@ int repo::usage(int argc, char *argv[])
 
 int repo::wip_rebase(int argc, char *argv[])
 {
+
+    git_repository *repo = NULL;
+    int error = git_repository_open(&repo, ".");
+    if (error != 0)
+    {
+        std::cerr << "Error opening repository\n";
+        return 1;
+    }
+    git_repository_free(repo);
+
     return repo::usage(argc, argv);
 }

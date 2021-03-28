@@ -51,6 +51,13 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(fmtlib)
 # Adds fmt::fmt
 
+SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
+find_package(libgit2 REQUIRED)
+message("--->>> ${LIBGIT2_LIBRARIES}")
+
+find_package(libssh2 REQUIRED)
+message("--->>> ${LIBSSH2_LIBRARIES}")
+
 # The compiled library code is here
 add_subdirectory(src)
 

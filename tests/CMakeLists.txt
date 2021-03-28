@@ -19,9 +19,21 @@ add_executable( testbhtool
                 test_repo.cpp
               )
 target_compile_features(testbhtool PRIVATE cxx_std_20)
+
+set(CMAKE_EXE_LINKER_FLAGS
+"-framework CoreFoundation -framework Security"
+)
 target_link_libraries(testbhtool PRIVATE gtest_main
                                       bhtool_library
-                                      )
+                        ${LIBGIT2_LIBRARIES}
+                        "/opt/homebrew/Cellar/curl/7.75.0/lib/libcurl.a"
+                        libz.a
+                        libiconv.a
+                        ${LIBSSH2_LIBRARIES}
+                        "/opt/homebrew/Cellar/openssl@1.1/1.1.1k/lib/libssl.a"
+                        "/opt/homebrew/Cellar/openssl@1.1/1.1.1k/lib/libcrypto.a"
+                    )
+                                  
 
 add_test(NAME testbhtooltest COMMAND testbhtool)
 

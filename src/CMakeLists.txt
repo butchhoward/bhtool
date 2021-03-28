@@ -16,7 +16,7 @@ add_library(bhtool_library
             stderrred.cpp
             repo.cpp
             ${HEADER_LIST})
-target_include_directories(bhtool_library PUBLIC ../include)
+target_include_directories(bhtool_library PUBLIC ../include ${LIBGIT2_INCLUDE_DIR})
 target_compile_features(bhtool_library PUBLIC cxx_std_20)
 
 # IDEs should put the headers in a nice place
