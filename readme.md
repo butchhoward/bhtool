@@ -8,6 +8,8 @@ Using a collection of bash scripts I use frequently as the basis for a project t
   - [Install Dependencies](#install-dependencies)
   - [Build](#build)
   - [Build Notes](#build-notes)
+- [Misc](#misc)
+  - [LLDB](#lldb)
 - [Usage](#usage)
 - [Commands](#commands)
   - [`stderrred <cmd> [args...]`](#stderrred-cmd-args)
@@ -49,6 +51,22 @@ I rolled all of this finding of the things into some cmake modules for the `find
 
 [libgit2](https://libgit2.org/)
 [Someone that made libgit2 work on macos](https://bvisness.me/libgit2/)
+
+
+## Misc
+
+### LLDB
+
+And we also get to learn how to use `lldb` to debug things here...
+[lldb tutorial](https://lldb.llvm.org/use/tutorial.html)
+
+**Basics**
+* `lldb bhtool repo wip-rebase`
+* `process launch`
+* `process continue`
+* `bt`
+
+Oh, yeah. This is a c-library: must explicity call the init...duh.
 
 ## Usage
 

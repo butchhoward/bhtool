@@ -18,6 +18,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   set(CMAKE_CXX_EXTENSIONS OFF)
 
   add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+  add_compile_options(-g -O0)
 
   # Let's nicely support folders in IDEs
   set_property(GLOBAL PROPERTY USE_FOLDERS ON)
