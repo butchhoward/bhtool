@@ -52,7 +52,15 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(fmtlib)
 # Adds fmt::fmt
 
+# homebrew puts things in different places depending on the system
+IF(CMAKE_SYSTEM_NAME MATCHES "Darwin")
+    execute_process(COMMAND brew --prefix OUTPUT_VARIABLE HOMEBREW_BASE_FOLDER OUTPUT_STRIP_TRAILING_WHITESPACE)
+ELSE()
+    message(WARNING "Not sure anything other than APPLE is supported. Good Luck!")
+ENDIF()
+
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
+
 find_package(libgit2 REQUIRED)
 
 # The compiled library code is here

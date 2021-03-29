@@ -13,7 +13,9 @@
 #PKG_SEARCH_MODULE(PC_LIBCURL LIBCURL)
 
 # this is almost certainly wrong for the general case, but that's where it is on this box
-set(CURL_PATH "/opt/homebrew/Cellar/curl/7.75.0/" )
+# /usr/local/Cellar/curl/7.75.0/lib/libcurl.a
+# /usr/local/Cellar/curl/7.75.0/include/curl/curl.h
+set(CURL_PATH "${HOMEBREW_BASE_FOLDER}/Cellar/curl/7.75.0/" )
 
 SET(LIBCURL_DEFINITIONS ${PC_LIBCURL_CFLAGS_OTHER})
 

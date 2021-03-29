@@ -13,7 +13,7 @@
 #PKG_SEARCH_MODULE(PC_LIBCRYPTO LIBCRYPTO)
 
 # this is almost certainly wrong for the general case, but that's where it is on this box
-set( LIBCRYPTO_PATH "/opt/homebrew/Cellar/openssl@1.1/1.1.1k/")
+set( LIBCRYPTO_PATH "${HOMEBREW_BASE_FOLDER}/Cellar/openssl@1.1/1.1.1k/")
 
 SET(LIBCRYPTO_DEFINITIONS ${PC_LIBCRYPTO_CFLAGS_OTHER})
 
@@ -21,7 +21,7 @@ FIND_PATH(LIBCRYPTO_INCLUDE_DIR NAMES crypto.h
    HINTS
    ${PC_LIBCRYPTO_INCLUDEDIR}
    ${PC_LIBCRYPTO_INCLUDE_DIRS}
-   PATHS ${LIBCRYPTO_PATH} 
+   PATHS ${LIBCRYPTO_PATH}
    PATH_SUFFIXES include include/openssl
 )
 
