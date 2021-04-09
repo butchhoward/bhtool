@@ -29,7 +29,7 @@ FIND_LIBRARY(LIBGIT2_LIBRARIES NAMES libgit2.a
 find_package(CoreFoundation REQUIRED)
 find_package(Security REQUIRED)
 find_package(libssh2 REQUIRED)
-find_package(libcurl REQUIRED)
+find_package(CURL REQUIRED)
 find_package(libcrypto REQUIRED)
 
 list(APPEND LIBGIT2_LIBRARIES ${COREFOUNDATION_LIBRARIES})
